@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        long long total = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            total += nums[i];
+        }
+        int rem = total % p;                   // Remainder check
+        if (rem == 0) return 0;
+        unordered_map<int, int> mp;            //Map to store variable
+        mp[0] = -1;   
+        long long prefix = 0;
+        int ans = nums.size();
+        for (int i = 0; i < nums.size(); i++) {
+            prefix += nums[i];
+            int sum = prefix % p;
+            int result = (sum - rem + p) % p;
+            if (mp.find(result) != mp.end()) {
+                int length = i - mp[result];
+                if (length < ans)
+                    ans = length;
+            }
+
+            mp[sum] = i;
+        }
+
+        if (ans == nums.size())
+            return -1;
+
+        return ans;
+    }
+};
