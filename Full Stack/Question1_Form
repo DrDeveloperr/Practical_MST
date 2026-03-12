@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Post</title>
+</head>
+
+<body>
+
+    <center>
+        <h2>Create Post</h2>
+    </center>
+
+    <form id="postForm">
+
+        <fieldset>
+            <legend>Post Details</legend>
+
+            <p>
+                <label for="title"><b>Title:</b></label><br>
+                <input type="text" id="title" placeholder="Enter title" required>
+            </p>
+
+            <p>
+                <label for="body"><b>Body:</b></label><br>
+                <textarea id="body" rows="4" cols="40" placeholder="Enter body" required></textarea>
+            </p>
+
+            <p>
+                <button type="submit">Submit Post</button>
+            </p>
+
+        </fieldset>
+
+    </form>
+
+    <br>
+
+    <p id="successMsg"></p>
+
+
+    <script>
+
+        document.getElementById("postForm").addEventListener("submit", function (e) {
+
+            e.preventDefault();   // prevent page reload
+
+            let title = document.getElementById("title").value;
+            let body = document.getElementById("body").value;
+
+            fetch("/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: title,
+                    body: body
+                })
+            })
+
+                .then(response => response.json())
+
+                .then(data => {
+                    document.getElementById("successMsg").innerText =
+                        "Post submitted successfully!";
+                })
+
+                .catch(error => {
+                    console.log(error);
+                });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
